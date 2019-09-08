@@ -1,59 +1,67 @@
-const isArray = function(obj) {
+
+// Logger
+let DEBUG = true
+let Log = {
+  log: (...msgs) => {
+    if (DEBUG) console.log(...msgs);
+  },
+  warn: (msg) => {
+    if (DEBUG) console.warn(msg);
+  },
+  debug: (msg) => {
+    if (DEBUG) console.debug(msg);
+  },
+  error: (msg) => {
+    if (DEBUG) console.error(msg);
+  },
+};
+
+const isArr = (obj) => {
   return Object.prototype.toString.call(obj) === '[object Array]';
 };
 
-let array = [0, 1];
+const isObj = (obj) => {
+  return Object.prototype.toString.call(obj) === '[object Object]';
+};
 
-// shallowCopy needed
-function arrayDiff(arrA, arrB) {
-  if (arrA.length !== arrB.length)
-    return true;
-  // same length, compare it's value
-  return arrA.some((value, i) => {
-    return arrB[i] !== value;
+function ProxyWatchable(_self) {
+  return new Proxy(_self, {
+    deleteProperty: (target, property) => {
+      Log.log('deleted ', property, ' property, value was:', target[property]);
+      return true;
+    },
+    set: (target, property, value, receiver) => {
+      const prev = target[property];
+      target[property] = value;
+      console.log("Set ", property, ' from ', prev, ' to ', value);
+      return true;
+    }
   });
 }
 
-function watchArray(_self) {
-  let _cloned = JSON.parse(JSON.stringify(_self));
-  const properties = Object.getOwnPropertyNames(Array.prototype).filter(item => typeof Array.prototype[item] === 'function');
-  properties.forEach((methodName, index) => {
-    const _method = _self[methodName];
-    Object.defineProperty(_self, methodName, {
-      enumerable: false,
-      configurable: true,
-      writable: false,
-      value: function() {
-        const prev = JSON.parse(JSON.stringify(_self));
-        let result = _method.apply(_self, arguments);
-        if (arrayDiff(prev, _self))
-          console.log('diffrent', prev, _self);
-        return result;
-      }
-    });
-  });
-  Object.getOwnPropertyNames(_self)
-    .filter( item => properties.indexOf(item) < 0 && item !== 'length')
-    .forEach(_index => {
-      Object.defineProperty(_self, _index, {
-        enumerable: false,
-        configurable: false,
-        set: function() {
-          if (_cloned[_index] !== arguments[0]) {
-            console.log('setter changed value', _cloned[_index] , arguments[0]);
-            _cloned[_index] = arguments[0];
-          }
-        },
-        get: function() {
-          return _cloned[_index];
-        },
-      })
-    });
-  Object.defineProperty(_self, '', {
-    get: function() {
-      return _cloned;
-    }
-  });
+function watcherObj(_self) {
+  // if (!(Proxy !== undefined)) {
+  //   return Watchable(_self);
+  // } else {
+    return ProxyWatchable(_self);
+  //}
 };
 
-watchArray(array);
+
+export const watch = (_data) => {
+  if (isArr(_data) || isObj(_data))
+    return watcherObj(_data);
+}
+// let array = [0, 1];
+
+// const watcherArray = watchArray(array);
+
+// watcherArray.push(2);
+// watcherArray.pop();
+// Log.log(watcherArray);
+
+// let num = 1;
+// const watcherVariable = watchArray(num);
+
+// num = 2;
+

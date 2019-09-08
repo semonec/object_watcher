@@ -7,8 +7,16 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "program": "${workspaceFolder}/js/watcher.js"
+      "name": "Launch App.js",
+      "program": "${workspaceRoot}/src/app.js",
+      "outFiles": [ "${workspaceRoot}/.compiled/**/*.js" ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Current File",
+      "program": "${file}",
+      "outFiles": [ "${workspaceRoot}/.compiled/**/*.js" ]
     }
   ]
 }
