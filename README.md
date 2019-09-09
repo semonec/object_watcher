@@ -2,6 +2,8 @@
 
 ## Execution step
 
+Node version with v8.xx (tested in v8.0.0)
+
 ### 1.  `npm i`
 
 - 실행에 필요한 노드 모듈 설치 필요
