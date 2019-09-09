@@ -1,42 +1,21 @@
 "use strict"
+import { Log } from './logger';
+import { isNumber, isObject, isString } from './util';
+import ClassicWatchable from './classicWatcher';
 
-// Logger
-let DEBUG = false;
-let Log = {
-  log: (...msgs) => {
-    if (DEBUG) console.log(...msgs);
-  },
-  warn: (msg) => {
-    if (DEBUG) console.warn(msg);
-  },
-  debug: (msg) => {
-    if (DEBUG) console.debug(msg);
-  },
-  error: (msg) => {
-    if (DEBUG) console.error(msg);
-  },
-};
-
-const isArray = (obj) => {
-  return Object.prototype.toString.call(obj) === '[object Array]';
-};
-
-const isObject = (obj) => {
-  return Object.prototype.toString.call(obj) === '[object Object]';
-};
-
-let watch = (obj, handler) => {
+export function watch(obj, handler) {
   if (!(Proxy !== undefined)) { // Proxy not supported
-    //return Watchable(_self);
+    return ClassicWatchable(obj, handler);
   }
-
   // Proxy supported
   return ProxyWatchable(obj, handler);
 };
 
 let ProxyWatchable = (_self, handler) => {
-  
-  const watchable =  new Proxy(_self, {
+  let instance = _self;
+  if (isNumber(_self) || isString(_self))
+   instance = { };
+  const watchable =  new Proxy(instance, {
     deleteProperty: (target, property) => {
       Log.log('deleted ', property, ' property, value was:', target[property]);
       handler({
@@ -64,6 +43,3 @@ let ProxyWatchable = (_self, handler) => {
   });
   return watchable;
 }
-
-
-export default watch;
