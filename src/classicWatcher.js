@@ -1,6 +1,10 @@
 import { shallowEqual, deepCopy} from './util';
-import { Log } from './logger';
 
+/**
+ * ClassicWatchable
+ * @param {*} _self 
+ * @param {*} handler 
+ */
 export default function ClassicWatchable(_self, handler) {
   // classical way to watch
   let _cloned = deepCopy(_self);
@@ -12,7 +16,7 @@ export default function ClassicWatchable(_self, handler) {
       enumerable: false,
       configurable: true,
       writable: false,
-      value: function() {
+      value: () => {
         const prev = JSON.parse(JSON.stringify(_self));
         let result = _method.apply(_self, arguments);
         if (!shallowEqual(prev, _self)) {
@@ -40,7 +44,7 @@ export default function ClassicWatchable(_self, handler) {
     Object.defineProperty(obj, prop, {
       enumerable: false,
       configurable: true,
-      set: function() {
+      set: () => {
         if (_cloned[prop] !== arguments[0]) {
           handler({
             type: 'changed',
@@ -50,7 +54,7 @@ export default function ClassicWatchable(_self, handler) {
           _cloned[prop] = arguments[0];
         }
       },
-      get: function() {
+      get: () => {
         return _cloned[prop];
       },
     });

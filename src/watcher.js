@@ -2,7 +2,12 @@ import { Log } from './logger';
 import { isArray, isObject, isString, isNumber } from './util';
 import ClassicWatchable from './classicWatcher';
 
-export function watch(obj, handler) {
+/**
+ * 
+ * @param {*} obj : Watch 하고자 하는 object, array
+ * @param {*} handler 
+ */
+export default function watch(obj, handler) {
   if (!(Proxy !== undefined)) { // Proxy not supported
     return ClassicWatchable(obj, handler);
   }

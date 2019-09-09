@@ -1,4 +1,4 @@
-import { watch, unwatch } from './watcher';
+import watch from './watcher';
 import { DelayPromise } from './util';
 
 let watcherFunc =  (event) => {
@@ -33,43 +33,42 @@ let testObjTask = () => {
 
 let testStringTask = () => {
   console.log('------------------ test string & number ------------------');
-  let obj = {};
-  obj.str = "a";
-  obj.watcherValue = {};
-  obj.watcherValue.str = obj.str;
-  obj.__defineSetter__("str", (newValue) => {
+  global.str = "a";
+  global.watcherValue = {};
+  global.watcherValue.str = global.str;
+  global.__defineSetter__("str", (newValue) => {
     watcherFunc({
-      'type': 'change',
-      'prev': obj.watcherValue.str,
+      'type': 'changed',
+      'prev': global.watcherValue.str,
       'value': newValue
     });
-    obj.watcherValue.str = newValue;
+    global.watcherValue.str = newValue;
   });
-  obj.__defineGetter__("str", () => this.watcherValue.str);
+  global.__defineGetter__("str", () => global.watcherValue.str);
   
   console.log('string changed, prev was "a" and value is "b" ');
-  obj.str = "b";
+  global.str = "b";
 
 
-  obj.num = 1;
-  obj.watcherValue.num = obj.num;
-  obj.__defineSetter__("num", (newValue) => {
+  global.num = 1;
+  global.watcherValue.num = global.num;
+  global.__defineSetter__("num", (newValue) => {
     watcherFunc({
-      'type': 'change',
-      'prev': obj.watcherValue.num,
+      'type': 'changed',
+      'prev': global.watcherValue.num,
       'value': newValue
     });
-    obj.watcherValue.str = newValue;
+    global.watcherValue.str = newValue;
   });
-  obj.__defineGetter__("num", () => this.watcherValue.num);
+  global.__defineGetter__("num", () => global.watcherValue.num);
   
   console.log('number changed, prev was 1 and value is 2 ');
-  obj.num = 2;
+  global.num = 2;
   return DelayPromise(1000);
 }
 
 let testRunner = new Promise((resolve, rejct) => {
-  console.log('------------------ Start Object watcher test ------------------');
+  console.log('------------------ Start Variable Watcher test ------------------');
   resolve();
 })
 

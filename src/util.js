@@ -16,11 +16,11 @@ export const isString = (str) => {
   return Object.prototype.toString.call(str) === '[object String]';
 };
 
-export function deepCopy(obj) {
+export const deepCopy = (obj) => {
   return JSON.parse(JSON.stringify(obj));
 }
 
-export function shallowEqual(objA, objB) {
+export const shallowEqual = (objA, objB) => {
   if (objA === objB) {
     return true;
   }
