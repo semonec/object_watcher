@@ -1,4 +1,3 @@
-"use strict"
 // Logger
 let DEBUG = false;
 export const Log = {

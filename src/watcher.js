@@ -1,6 +1,5 @@
-"use strict"
 import { Log } from './logger';
-import { isNumber, isObject, isString } from './util';
+import { isArray, isObject, isString, isNumber } from './util';
 import ClassicWatchable from './classicWatcher';
 
 export function watch(obj, handler) {

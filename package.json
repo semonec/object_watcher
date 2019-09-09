@@ -4,9 +4,12 @@
   "description": "ObjectWatcher",
   "main": "src/app.js",
   "dependencies": {
-    "babel-register": "^6.26.0",
+    "babel-plugin-transform-remove-strict-mode": "0.0.2",
     "babel-preset-es2015": "^6.24.1",
-    "melanke-watchjs": "^1.5.0"
+    "babel-register": "^6.26.0",
+    "install": "^0.13.0",
+    "melanke-watchjs": "^1.5.0",
+    "npm": "^6.11.3"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -18,7 +21,8 @@
       "es2015"
     ],
     "sourceMaps": true,
-    "retainLines": true
+    "retainLines": true,
+    "plugins": ["transform-remove-strict-mode"]
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

@@ -1,4 +1,3 @@
-'use strict'
 import { shallowEqual, deepCopy} from './util';
 import { Log } from './logger';
 

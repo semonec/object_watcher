@@ -9,11 +9,11 @@ export const isObject = (obj) => {
 };
 
 export const isNumber = (num) => {
-  return Object.prototype.toString.call(obj) === '[object Number]';
+  return Object.prototype.toString.call(num) === '[object Number]';
 };
 
-export const isString = (num) => {
-  return Object.prototype.toString.call(obj) === '[object String]';
+export const isString = (str) => {
+  return Object.prototype.toString.call(str) === '[object String]';
 };
 
 export function deepCopy(obj) {
